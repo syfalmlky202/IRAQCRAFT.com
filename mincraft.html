@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إصدارات ماين كرافت</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --dark-bg: #0d0d0d;
+            --container-bg: rgba(30, 30, 30, 0.8);
+            --section-bg: rgba(45, 45, 45, 0.6);
+            --green-gradient: linear-gradient(45deg, #2ecc71, #27ae60);
+            --green-hover-gradient: linear-gradient(45deg, #27ae60, #2ecc71);
+            --text-color: #ecf0f1;
+            --shadow-color: rgba(0, 0, 0, 0.5);
+        }
+
+        body {
+            background: var(--dark-bg);
+            color: var(--text-color);
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            padding: 1rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.6;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 400px;
+            background: var(--container-bg);
+            padding: 0.8rem;
+            border-radius: 12px;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 4px 15px var(--shadow-color);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .main-title {
+            font-size: 1.4rem;
+            text-align: center;
+            margin-bottom: 0.8rem;
+            background: var(--green-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-align: center;
+            margin: 0.8rem 0 0.5rem;
+            color: #2ecc71;
+            position: relative;
+        }
+
+        .download-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .download-item {
+            background: var(--section-bg);
+            padding: 0.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px var(--shadow-color);
+            transition: transform 0.2s ease;
+        }
+
+        .download-item:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px var(--shadow-color);
+        }
+
+        .download-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 40px;
+            background: var(--green-gradient);
+            color: var(--text-color);
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .download-button .icon {
+            margin-right: 0.5rem;
+        }
+
+        .download-button:hover {
+            background: var(--green-hover-gradient);
+        }
+
+        .download-button:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        <h1 class="main-title">إصدارات ماين كرافت</h1>
+        
+        <h2 class="section-title">الإصدارات الرسمية</h2>
+        <ul class="download-list">
+            <li class="download-item">
+                <a class="download-button" href="https://www.mediafire.com/file/jq3wymstjn00d7n/%25D9%2585%25D8%25A7%25D9%258A%25D9%2586_%25D9%2583%25D8%25B1%25D8%25A7%25D9%2581%25D8%25AA_100.apk/file">
+                    <i class="fas fa-download icon"></i> ماين كرافت - إصدار 1.21.100
+                </a>
+            </li>
+            <li class="download-item">
+                <a class="download-button" href="https://www.mediafire.com/file/3jxs9dlxraxb28s/_1-21-90-.apk/file">
+                    <i class="fas fa-download icon"></i> ماين كرافت - إصدار 1.21.90
+                </a>
+            </li>
+            <li class="download-item">
+                <a class="download-button" href="https://www.mediafire.com/file/uz650qlwbpmtbcv/1.21.80.apk/file">
+                    <i class="fas fa-download icon"></i> ماين كرافت - إصدار 1.21.80
+                </a>
+            </li>
+            <li class="download-item">
+                <a class="download-button" href="https://www.mediafire.com/file/jlycz2o30rh7kp2/%25D9%2585%25D8%25A7%25D9%258A%25D9%2586_%25D9%2583%25D8%25B1%25D8%25A7%25D9%2581%25D8%25AA_%25D8%25A7%25D8%25B5%25D8%25AF%25D8%25A7%25D8%25B170.apk/file">
+                    <i class="fas fa-download icon"></i> ماين كرافت - إصدار 1.21.70
+                </a>
+            </li>
+            <li class="download-item">
+                <a class="download-button" href="https://www.mediafire.com/file/b5ic9jgy3dhkwrw/%25D9%2585%25D8%25A7%25D9%258A%25D9%2586_%25D9%2583%25D8%25B1%25D8%25A7%25D9%2581%25D8%25AA_61.apk/file">
+                    <i class="fas fa-download icon"></i> ماين كرافت - إصدار 1.21.61
+                </a>
+            </li>
+        </ul>
+        
+        <h2 class="section-title">إصدارات باتش</h2>
+        <ul class="download-list">
+            <li class="download-item">
+                <a class="download-button" href="https://www.mediafire.com/file/6irhlvge6kd2hc2/1.21.70.03+Patch+-+CallousGamerz.apk/file?dkey=a7mjqm4ybin&r=1998">
+                    <i class="fas fa-download icon"></i> ماين كرافت باتش - إصدار 1.21.70
+                </a>
+            </li>
+        </ul>
+    </div>
+    
+</body>
+</html>

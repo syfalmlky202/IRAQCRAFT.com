@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>متجر حكومه</title>
+  <meta name="description" content="متجر حكومه: حسابات، سيرفرات، وريلمات ماين كرافت بجودة عالية وأسعار تنافسية. اكتشف عروضنا الحصرية الآن!">
+  <meta name="keywords" content="متجر حكومه, ماين كرافت, حسابات ماين كرافت, سيرفرات ماين كرافت, ريلمات ماين كرافت, متجر ألعاب, شراء سيرفرات, شراء حسابات">
+  <link rel="icon" href="https://example.com/favicon.ico" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
+  <link rel="stylesheet" href="store.css">
+
+</head>
+<body>
+
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+  <aside class="sidebar" id="sidebar" aria-label="قائمة التنقل الرئيسية">
+    <button class="close-btn" onclick="toggleSidebar()" aria-label="إغلاق القائمة">
+      <i class="fas fa-times"></i>
+    </button>
+    <button class="menu-item" onclick="showSection('all-products'); toggleSidebar();">
+      <i class="fas fa-th-large"></i> جميع المنتجات
+    </button>
+    <button class="menu-item" onclick="showSection('realms'); toggleSidebar();">
+      <i class="fas fa-gem"></i> الريلمات
+    </button>
+    <button class="menu-item" onclick="showSection('coins'); toggleSidebar();">
+      <i class="fas fa-coins"></i> الكوينزات
+    </button>
+    <button class="menu-item" onclick="showSection('accounts'); toggleSidebar();">
+      <i class="fas fa-user-circle"></i> الحسابات
+    </button>
+    <button class="menu-item" onclick="showSection('ranks'); toggleSidebar();">
+      <i class="fas fa-medal"></i> الرانكات
+    </button>
+    <button class="menu-item" onclick="showSection('packs'); toggleSidebar();">
+      <i class="fas fa-box-open"></i> الحزم
+    </button>
+    <button class="menu-item" onclick="showSection('servers'); toggleSidebar();">
+      <i class="fas fa-server"></i> السيرفرات
+    </button>
+  </aside>
+
+  <div class="fixed-action-buttons">
+    <div class="cart-icon" onclick="toggleCart()" role="button" aria-controls="cart" aria-expanded="false" id="cart-icon">
+      <i class="fas fa-shopping-cart"></i> السلة
+      <span class="cart-badge" id="cart-badge">0</span> </div>
+    <div class="sidebar-toggle" onclick="toggleSidebar()" role="button" aria-controls="sidebar" aria-expanded="false" id="sidebar-toggle">
+      <i class="fas fa-bars"></i> القائمة
+    </div>
+  </div>
+
+  <div class="cart-overlay" id="cart-overlay" onclick="toggleCart()"></div>
+
+  <div class="cart" id="cart" aria-label="سلة المشتريات">
+    <button class="close-cart" onclick="toggleCart()" aria-label="إغلاق سلة المشتريات">
+      <i class="fas fa-times"></i>
+    </button>
+    <h3>سلة المشتريات</h3>
+    <ul id="cart-list">
+    </ul>
+    <p id="empty-cart-message">سلة المشتريات فارغة.</p>
+    <p id="total-price">المجموع: $0.00</p>
+    <div class="checkout-buttons">
+      <a href="#" id="telegram-checkout" target="_blank" class="checkout-button">
+        <i class="fab fa-telegram-plane"></i> إتمام الطلب عبر تيليجرام
+      </a>
+      <a href="#" id="whatsapp-checkout" target="_blank" class="checkout-button whatsapp">
+        <i class="fab fa-whatsapp"></i> إتمام الطلب عبر واتساب
+      </a>
+    </div>
+  </div>
+
+  <main class="container">
+    <header class="header">
+      <h1>متجر حكومه</h1>
+      <p>وجهتك الأولى لحسابات، كوينزات، وريلمات ماين كرافت عالية الجودة</p>
+    </header>
+
+    <div id="products-container" class="section active">
+      <h2 class="section-title">جميع المنتجات</h2>
+    </div>
+
+    <div id="realms-section" class="section">
+      <h2 class="section-title">الريلمات</h2>
+    </div>
+    <div id="coins-section" class="section">
+      <h2 class="section-title">الكوينزات</h2>
+    </div>
+    <div id="accounts-section" class="section">
+      <h2 class="section-title">الحسابات</h2>
+    </div>
+    <div id="ranks-section" class="section">
+      <h2 class="section-title">الرانكات</h2>
+    </div>
+    <div id="packs-section" class="section">
+      <h2 class="section-title">الحزم</h2>
+    </div>
+    <div id="servers-section" class="section">
+      <h2 class="section-title">السيرفرات</h2>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; <span id="current-year"></span> متجر حكومه. جميع الحقوق محفوظة.</p>
+    <p>للتواصل والدعم الفني:</p>
+    <div class="social-icons">
+      <a href="https://t.me/iq_CRAFT" target="_blank" aria-label="قناتنا على تيليجرام"><i class="fab fa-telegram-plane"></i></a>
+      <a href="https://wa.me/+9647781356002" target="_blank" aria-label="تواصل معنا على واتساب"><i class="fab fa-whatsapp"></i></a>
+    </div>
+  </footer>
+
+  <audio id="add-sound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_d7b6d4cdb9.mp3" preload="auto"></audio>
+
+  <div class="item-details-modal-overlay" id="item-details-modal-overlay" onclick="closeItemDetails()"></div>
+  <div class="item-details-modal" id="item-details-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <button class="close-details-btn" onclick="closeItemDetails()" aria-label="إغلاق التفاصيل">
+      <i class="fas fa-times"></i>
+    </button>
+    <div class="modal-content">
+      <h3 id="modal-title">تفاصيل المنتج</h3>
+      <img id="modal-image" src="" alt="صورة المنتج" style="width: 100%; height: 200px; object-fit: cover; border-radius: var(--border-radius-sm); margin-bottom: 20px;">
+      <p><strong>الاسم:</strong> <span id="modal-name"></span></p>
+      <p><strong>السعر:</strong> <span id="modal-price"></span></p>
+      <div id="modal-specific-details">
+      </div>
+      <p><strong>الوصف:</strong> <span id="modal-description"></span></p>
+      <button class="add-to-cart-from-modal" id="add-to-cart-from-modal" onclick="addToCartFromModal()">إضافة للسلة</button>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script> 
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics-compat.js"></script>
+  <script src="store.js"></script>
+</body>
+</html>

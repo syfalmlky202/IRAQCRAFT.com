@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> عراق كرافت</title>
+  <link rel="icon" href="https://via.placeholder.com/32x32?text=AC" type="image/png">
+  <link rel="apple-touch-icon" href="https://via.placeholder.com/180x180?text=AC">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700;900&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+  <div id="loader" class="loader-overlay flex-center">
+    <div class="loader"></div>
+    <p class="sr-only">جاري تحميل المحتوى...</p>
+  </div>
+
+  <header class="header">
+    <div class="container header-content">
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="welcome-section">
+      <div class="welcome-box glass-effect" id="welcomeBox">
+        <span class="sr-only">رسالة ترحيبية:</span>
+        أهلاً وسهلاً بكم في تطبيق عراق كرافت، التطبيق العراقي للمودات في ماين كرافت!
+      </div>
+    </section>
+
+    <section class="search-section glass-effect">
+      <h2 class="sr-only">قسم البحث</h2>
+      <div class="search-container">
+        <input type="text" id="searchInput" placeholder="ابحث عن مود أو رقم..." aria-label="حقل البحث عن المودات">
+        <button id="searchBtn" aria-label="زر البحث">
+          <i class="fas fa-search"></i>
+          <span>بحث</span>
+        </button>
+      </div>
+    </section>
+
+    <nav class="tabs-nav glass-effect" aria-label="فئات المودات">
+      <button class="button-link active" id="tabMods" data-category="mods">
+        <i class="fas fa-hammer"></i>
+        <span>مودات</span>
+      </button>
+      <button class="button-link" id="tabResourcePacks" data-category="resourcePacks">
+        <i class="fas fa-box-open"></i>
+        <span>ريسورس باك</span>
+      </button>
+      <button class="button-link" id="tabWorlds" data-category="worlds">
+        <i class="fas fa-globe"></i>
+        <span>عوالم</span>
+      </button>
+      <button class="button-link" id="tabChannels" data-category="channels">
+        <i class="fas fa-robot"></i>
+        <span>مودات قديمه</span>
+      </button>
+    </nav>
+
+    <div id="modsCountContainer" class="mods-count-container glass-effect">
+      إجمالي عدد المودات: <span id="totalModsCount">0</span>
+    </div>
+
+    <section class="mods-grid" id="modsContainer" aria-live="polite">
+      </section>
+  </main>
+
+  <div class="fixed-footer-icons">
+    <a href="i.html" aria-label="حساباتنا">
+        <i class="fas fa-user-circle"></i>
+        <span>حساباتنا</span>
+    </a>
+    <a href="ss.html" aria-label="سياسة الخصوصية">
+        <i class="fas fa-shield-alt"></i>
+        <span>الخصوصية</span>
+    </a>
+    <a href="mincraft.html" aria-label="تحميل ماين كرافت">
+        <i class="fas fa-gamepad"></i>
+        <span>تحميل MC</span>
+    </a>
+    <a href="store.html" aria-label="المتجر">
+        <i class="fas fa-store"></i>
+        <span>المتجر</span>
+    </a>
+    <a href="download.html" aria-label="تحميل التطبيق">
+        <i class="fas fa-mobile-alt"></i>
+        <span>تطبيق</span>
+    </a>
+  </div>
+
+  <div class="scroll-buttons">
+    <button id="scrollToTopBtn" class="scroll-button" aria-label="الذهاب لأعلى الصفحة">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+    <button id="scrollToBottomBtn" class="scroll-button" aria-label="الذهاب لأسفل الصفحة">
+      <i class="fas fa-arrow-down"></i>
+    </button>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-analytics-compat.js" defer></script>
+  <script src="index.js" defer></script>
+</body>
+</html>
