@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>IraqCraft - منصة مواقع المودات</title>
+<style>
+body {
+  margin:0; padding:0;
+  font-family:'Segoe UI',sans-serif;
+  background:#111;
+  color:#00ff7f;
+  text-align:center;
+}
+.card {
+  background:#222;
+  padding:20px;
+  border-radius:12px;
+  width:350px;
+  margin:50px auto;
+}
+input,button {
+  margin:10px 0;
+  padding:10px;
+  border-radius:8px;
+  border:none;
+  width:80%;
+}
+button {
+  background:#00ff7f;
+  color:#000;
+  font-weight:bold;
+  cursor:pointer;
+  transition:all 0.2s;
+}
+button:hover {
+  background:#0f0;
+  transform:scale(1.05);
+}
+#siteDisplay {
+  display:none;
+  max-width:1000px;
+  margin:30px auto;
+  padding:20px;
+}
+header#siteTitle {
+  font-size:2.5em;
+  margin-bottom:20px;
+  text-shadow:0 0 10px #00ff7f;
+}
+.modList {
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+  gap:20px;
+}
+.modItem {
+  background:#1a1a1a;
+  border:1px solid #00ff7f;
+  border-radius:12px;
+  padding:15px;
+  transition:transform 0.2s, box-shadow 0.2s;
+}
+.modItem:hover {
+  transform:translateY(-5px);
+  box-shadow:0 0 15px #00ff7f;
+}
+.modItem img {
+  width:100%;
+  border-radius:8px;
+  margin-bottom:10px;
+}
+</style>
+</head>
+<body>
+
+<!-- تسجيل الدخول / إنشاء حساب -->
+<div id="authCard" class="card">
+<h2>تسجيل الدخول / إنشاء حساب</h2>
+<input type="email" id="email" placeholder="الإيميل"><br>
+<input type="password" id="password" placeholder="كلمة السر"><br>
+<button id="registerBtn">تسجيل جديد</button>
+<button id="loginBtn">دخول</button>
+</div>
+
+<!-- إنشاء الموقع الفرعي -->
+<div id="siteCard" class="card" style="display:none;">
+<h2>✦ أنشئ موقعك ✦</h2>
+<input type="text" id="siteName" placeholder="اسم موقعك"><br>
+<button id="createBtn">إنشاء</button>
+<button id="logoutBtn">تسجيل خروج</button>
+</div>
+
+<!-- عرض الموقع الفرعي -->
+<div id="siteDisplay">
+<header id="siteTitle">اسم الموقع</header>
+<div class="modList" id="modsContainer"></div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+// 🔹 Firebase Config
+const firebaseConfig = {
+apiKey:"AIzaSyDHGM2LyFNd4e9etpPPecv6-7yPl6WUjpc",
+authDomain:"hkomhsf-73eb1.firebaseapp.com",
+databaseURL:"https://mod80-99931-default-rtdb.firebaseio.com",
+projectId:"mod80-99931",
+storageBucket:"mod80-99931.firebasestorage.app",
+messagingSenderId:"68372905453",
+appId:"1:68372905453:web:f097dca1b63adf5ef5fbe4",
+measurementId:"G-FGLG0HBSYP"
+};
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const auth = getAuth(app);
+
+// 🔹 تسجيل جديد
+async function register(){
+const email=document.getElementById("email").value;
+const password=document.getElementById("password").value;
+try{await createUserWithEmailAndPassword(auth,email,password);alert("✅ تم إنشاء الحساب");}
+catch(err){alert("❌ "+err.message);}
+}
+
+// 🔹 تسجيل دخول
+async function login(){
+const email=document.getElementById("email").value;
+const password=document.getElementById("password").value;
+try{await signInWithEmailAndPassword(auth,email,password);alert("✅ تم تسجيل الدخول");}
+catch(err){alert("❌ "+err.message);}
+}
+
+// 🔹 إنشاء موقع فرعي بدون صورة
+async function createSite(){
+const user=auth.currentUser;
+if(!user) return alert("⚠️ سجل دخول أولاً");
+const siteName=document.getElementById("siteName").value.trim();
+if(!siteName) return alert("⚠️ أدخل اسم الموقع");
+try{
+await set(ref(db,'user_sites/'+user.uid+'/'+siteName),{name:siteName,createdAt:Date.now()});
+alert("✅ تم إنشاء موقعك!");
+}catch(err){console.error(err);alert("⚠️ "+err.message);}
+}
+
+// 🔹 تسجيل خروج
+async function logout(){await signOut(auth);alert("🚪 تم تسجيل الخروج");}
+
+// 🔹 متابعة حالة تسجيل الدخول
+onAuthStateChanged(auth,user=>{
+document.getElementById("authCard").style.display=user?"none":"block";
+document.getElementById("siteCard").style.display=user?"block":"none";
+});
+
+// 🔹 ربط الأزرار
+document.getElementById("registerBtn").addEventListener("click",register);
+document.getElementById("loginBtn").addEventListener("click",login);
+document.getElementById("createBtn").addEventListener("click",createSite);
+document.getElementById("logoutBtn").addEventListener("click",logout);
+
+// 🔹 عرض الموقع الفرعي حسب URL
+async function showSite(){
+const pathParts=window.location.pathname.split("/");
+if(pathParts[1]!=="site") return;
+const siteName=decodeURIComponent(pathParts[2]);
+document.getElementById("authCard").style.display="none";
+document.getElementById("siteCard").style.display="none";
+document.getElementById("siteDisplay").style.display="block";
+document.getElementById("siteTitle").innerText=siteName;
+
+// جلب بيانات المودات إذا موجودة
+const dbRef=ref(db);
+get(child(dbRef,"user_sites")).then(snapshot=>{
+if(snapshot.exists()){
+const data=snapshot.val();
+for(const uid in data){
+if(data[uid][siteName]){
+loadMods(uid,siteName);
+break;
+}}}}).catch(err=>console.error(err));
+}
+
+// 🔹 تحميل المودات
+async function loadMods(uid,siteName){
+const dbRef=ref(db,'user_sites/'+uid+'/'+siteName+'/mods');
+get(dbRef).then(snapshot=>{
+const modsContainer=document.getElementById("modsContainer");
+modsContainer.innerHTML="";
+if(snapshot.exists()){
+const mods=snapshot.val();
+for(const key in mods){
+const mod=mods[key];
+const div=document.createElement("div");
+div.className="modItem";
+div.innerHTML=`<img src="${mod.img}" alt="${mod.name}"><br>${mod.name}<br><button onclick="window.open('${mod.link}','_blank')">تحميل</button>`;
+modsContainer.appendChild(div);
+}}}).catch(err=>console.error(err));
+}
+
+showSite();
+</script>
+</body>
+</html>
