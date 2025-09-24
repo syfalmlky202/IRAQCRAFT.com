@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>تعديل IRAQCRAFT.mcpack</title>
+  <title>صانع الريسوسباك</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
   <style>
@@ -158,20 +158,19 @@
       <i class="fa-solid fa-file-arrow-down"></i> تعديل وحفظ الملف
     </button>
 
-    <!-- نقاط التعليم -->
     <ul id="steps">
-      <li id="step1"><i class="fa-solid fa-box"></i> قراءة الملف الريسوسباك </li>
+      <li id="step1"><i class="fa-solid fa-box"></i> قراءة الملف الريسوسباك</li>
       <li id="step2"><i class="fa-solid fa-image"></i> تعديل الصورة المختارة</li>
-      <li id="step3"><i class="fa-solid fa-wrench"></i> تعديل الريسوسباك </li>
+      <li id="step3"><i class="fa-solid fa-wrench"></i> تعديل manifest وUUID</li>
       <li id="step3b"><i class="fa-solid fa-pen-to-square"></i> تعديل الاسم والوصف</li>
-      <li id="step4"><i class="fa-solid fa-floppy-disk"></i> إنشاء الملف الريسوسباك النهائي  </li>
+      <li id="step4"><i class="fa-solid fa-floppy-disk"></i> إنشاء الملف النهائي بصيغة mcpack</li>
       <li id="step5"><i class="fa-solid fa-check"></i> تم الحفظ بنجاح</li>
     </ul>
 
     <p id="status"></p>
   </div>
 
-  <div id="toast" class="toast"><i class="fa-solid fa-check"></i> تم صنع الريسوسباك وتحميله بنجاح</div>
+  <div id="toast" class="toast"><i class="fa-solid fa-check"></i> تم تعديل الملف وتحميله بنجاح</div>
 
   <script>
     async function modifyMcpack() {
@@ -236,24 +235,26 @@
         zip.file(manifestFile, JSON.stringify(manifest, null, 2));
       }
 
-      // خطوة 4: إنشاء الملف النهائي
+      // خطوة 4: إنشاء الملف النهائي بصيغة mcpack
       steps[4].classList.add('active');
       await new Promise(r => setTimeout(r, 400));
       const newContent = await zip.generateAsync({ type: "blob" });
       const a = document.createElement("a");
       a.href = URL.createObjectURL(newContent);
-      a.download = "IRAQCRAFT.mcpack";
+      a.download = "IRAQCRAFT.mcpack"; // الاسم النهائي mcpack
       a.click();
 
       // خطوة 5: نجاح الحفظ
       steps[5].classList.add('active');
       status.textContent = replacedAny 
-        ? "✅ تم تعديل الصور، الاسم والوصف وتحديث UUID" 
-        : "⚠️ لم يتم العثور على الصور لكن تم تعديل الاسم والوصف وUUID";
+        ? "✅ تم تعديل الصور، الاسم والوصف وتحديث UUID"
+        : "⚠️ تم تعديل الاسم والوصف وUUID، لكن لم يتم العثور على الصور";
 
+      // إشعار المستخدم أن الملف جاهز للاستخدام في Minecraft Bedrock
       const toast = document.getElementById("toast");
+      toast.textContent = "✅ الملف تم حفظه بصيغة mcpack وجاهز للاستخدام في Minecraft Bedrock!";
       toast.classList.add("show");
-      setTimeout(() => toast.classList.remove("show"), 3000);
+      setTimeout(() => toast.classList.remove("show"), 3500);
     }
 
     function generateUUID() {
