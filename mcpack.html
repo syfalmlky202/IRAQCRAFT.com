@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>صانع الريسوسباك</title>
+  <title>تعديل IRAQCRAFT.mcpack</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
   <style>
@@ -15,7 +15,6 @@
       min-height: 100vh;
       background: linear-gradient(135deg, #0f2417, #193b27);
     }
-
     .card {
       background: rgba(25,59,39,0.95);
       border-radius: 20px;
@@ -25,22 +24,18 @@
       text-align: center;
       border: 1px solid rgba(0, 255, 127, 0.3);
       box-shadow: 0 0 25px rgba(0,255,127,0.3);
-      transform: translateY(-50px);
-      opacity: 0;
       animation: fadeSlide 0.7s forwards;
     }
-
     @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(-50px); }
       to { opacity: 1; transform: translateY(0); }
     }
-
     h1 {
       color: #00ff7f;
       font-size: 28px;
       margin-bottom: 25px;
       text-shadow: 0 0 12px rgba(0,255,127,0.6);
     }
-
     input[type="text"], textarea {
       width: 100%;
       padding: 10px;
@@ -52,7 +47,6 @@
       font-size: 15px;
       resize: none;
     }
-
     .upload-box {
       display: flex;
       align-items: center;
@@ -72,7 +66,6 @@
       background: rgba(0,255,127,0.05);
     }
     input[type="file"] { display: none; }
-
     button {
       display: flex;
       align-items: center;
@@ -95,14 +88,11 @@
       box-shadow: 0 6px 25px rgba(0,255,127,0.5);
     }
     button:active { transform: scale(0.97); }
-
     #status {
       margin-top: 15px;
       font-size: 14px;
       color: #a7e4c0;
     }
-
-    /* نقاط التعليم */
     #steps {
       list-style: none;
       padding: 0;
@@ -118,11 +108,7 @@
       gap: 8px;
       transition: opacity 0.4s ease, transform 0.4s ease;
     }
-    #steps li.active {
-      opacity: 1;
-      transform: translateX(0);
-    }
-
+    #steps li.active { opacity: 1; transform: translateX(0); }
     .toast {
       position: fixed;
       bottom: 20px;
@@ -145,33 +131,26 @@
 <body>
   <div class="card">
     <h1><i class="fa-solid fa-cogs"></i>صنع الريسوسباك</h1>
-
     <input type="text" id="nameInput" placeholder="اسم الريسورس باك الجديد">
     <textarea id="descInput" rows="3" placeholder="وصف الريسورس باك الجديد"></textarea>
-
     <label class="upload-box" for="imageInput">
       <i class="fa-solid fa-image"></i> اختر صورة جديدة
     </label>
     <input type="file" id="imageInput" accept="image/*">
-
     <button onclick="modifyMcpack()">
       <i class="fa-solid fa-file-arrow-down"></i> تعديل وحفظ الملف
     </button>
-
     <ul id="steps">
-      <li id="step1"><i class="fa-solid fa-box"></i> قراءة الملف الريسوسباك</li>
+      <li id="step1"><i class="fa-solid fa-box"></i> قراءة الملف الريسوسباك </li>
       <li id="step2"><i class="fa-solid fa-image"></i> تعديل الصورة المختارة</li>
-      <li id="step3"><i class="fa-solid fa-wrench"></i> تعديل manifest وUUID</li>
+      <li id="step3"><i class="fa-solid fa-wrench"></i> تعديل الريسوسباك </li>
       <li id="step3b"><i class="fa-solid fa-pen-to-square"></i> تعديل الاسم والوصف</li>
-      <li id="step4"><i class="fa-solid fa-floppy-disk"></i> إنشاء الملف النهائي بصيغة mcpack</li>
+      <li id="step4"><i class="fa-solid fa-floppy-disk"></i> إنشاء الملف الريسوسباك النهائي  </li>
       <li id="step5"><i class="fa-solid fa-check"></i> تم الحفظ بنجاح</li>
     </ul>
-
     <p id="status"></p>
   </div>
-
-  <div id="toast" class="toast"><i class="fa-solid fa-check"></i> تم تعديل الملف وتحميله بنجاح</div>
-
+  <div id="toast" class="toast"><i class="fa-solid fa-check"></i> تم صنع الريسوسباك وتحميله بنجاح</div>
   <script>
     async function modifyMcpack() {
       const nameInput = document.getElementById('nameInput').value.trim();
@@ -186,23 +165,17 @@
         document.getElementById('step4'),
         document.getElementById('step5')
       ];
-
       steps.forEach(s => s.classList.remove('active'));
-
       if (!fileInput.files.length) {
         status.textContent = "⚠️ الرجاء اختيار صورة أولاً";
         return;
       }
       status.textContent = "⏳ جاري تعديل الملف...";
-
-      // خطوة 1: قراءة الملف
       steps[0].classList.add('active');
       await new Promise(r => setTimeout(r, 400));
       const response = await fetch("IRAQCRAFT.mcpack");
       const arrayBuffer = await response.arrayBuffer();
       const zip = await JSZip.loadAsync(arrayBuffer);
-
-      // خطوة 2: استبدال الصورة
       steps[1].classList.add('active');
       await new Promise(r => setTimeout(r, 400));
       const uploadedImage = fileInput.files[0];
@@ -215,8 +188,6 @@
           replacedAny = true;
         }
       }
-
-      // خطوة 3: تعديل manifest وUUID
       steps[2].classList.add('active');
       await new Promise(r => setTimeout(r, 400));
       const manifestFile = files.find(f => f.endsWith("manifest.json"));
@@ -225,38 +196,27 @@
         const manifest = JSON.parse(manifestContent);
         manifest.header.uuid = generateUUID();
         if (manifest.modules) manifest.modules.forEach(m => m.uuid = generateUUID());
-
-        // خطوة 3b: تعديل الاسم والوصف
         steps[3].classList.add('active');
         await new Promise(r => setTimeout(r, 400));
         if (nameInput) manifest.header.name = nameInput;
         if (descInput) manifest.header.description = descInput;
-
         zip.file(manifestFile, JSON.stringify(manifest, null, 2));
       }
-
-      // خطوة 4: إنشاء الملف النهائي بصيغة mcpack
       steps[4].classList.add('active');
       await new Promise(r => setTimeout(r, 400));
-      const newContent = await zip.generateAsync({ type: "blob" });
+      const newContent = await zip.generateAsync({ type: "blob", mimeType: "application/octet-stream" });
       const a = document.createElement("a");
       a.href = URL.createObjectURL(newContent);
-      a.download = "IRAQCRAFT.mcpack"; // الاسم النهائي mcpack
+      a.download = "IRAQCRAFT.mcpack";
       a.click();
-
-      // خطوة 5: نجاح الحفظ
       steps[5].classList.add('active');
       status.textContent = replacedAny 
-        ? "✅ تم تعديل الصور، الاسم والوصف وتحديث UUID"
-        : "⚠️ تم تعديل الاسم والوصف وUUID، لكن لم يتم العثور على الصور";
-
-      // إشعار المستخدم أن الملف جاهز للاستخدام في Minecraft Bedrock
+        ? "✅ تم تعديل الصور، الاسم والوصف وتحديث UUID" 
+        : "⚠️ لم يتم العثور على الصور لكن تم تعديل الاسم والوصف وUUID";
       const toast = document.getElementById("toast");
-      toast.textContent = "✅ الملف تم حفظه بصيغة mcpack وجاهز للاستخدام في Minecraft Bedrock!";
       toast.classList.add("show");
-      setTimeout(() => toast.classList.remove("show"), 3500);
+      setTimeout(() => toast.classList.remove("show"), 3000);
     }
-
     function generateUUID() {
       return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
         var r = Math.random()*16|0, v = c=='x'?r:(r&0x3|0x8);
