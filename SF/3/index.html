@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>صانع الكيب باك</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0f2417, #193b27);
+      padding: 15px;
+      color: #c4f5d6;
+    }
+    .card {
+      background: rgba(25,59,39,0.95);
+      border-radius: 20px;
+      padding: 25px 20px;
+      width: 100%;
+      max-width: 420px;
+      text-align: center;
+      border: 1px solid rgba(0, 255, 127, 0.3);
+      box-shadow: 0 0 25px rgba(0,255,127,0.3);
+      animation: fadeSlide 0.7s forwards;
+    }
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(-50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    h1 {
+      color: #00ff7f;
+      font-size: 22px;
+      margin-bottom: 20px;
+      text-shadow: 0 0 12px rgba(0,255,127,0.6);
+    }
+    input[type="text"], textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 12px;
+      border: 1.5px solid #00ff7f;
+      background: rgba(0,255,127,0.05);
+      color: #c4f5d6;
+      font-size: 15px;
+      resize: none;
+    }
+    .upload-box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border: 2px dashed rgba(0,255,127,0.5);
+      border-radius: 15px;
+      padding: 15px;
+      cursor: pointer;
+      margin-bottom: 20px;
+      transition: border-color 0.3s, background 0.3s, transform 0.1s;
+      font-weight: bold;
+      color: #c4f5d6;
+    }
+    .upload-box:hover {
+      border-color: #00ff7f;
+      background: rgba(0,255,127,0.05);
+      transform: scale(1.02);
+    }
+    input[type=file] { display: none; }
+    button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: #00ff7f;
+      border: none;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #0f2417;
+      cursor: pointer;
+      width: 100%;
+      transition: 0.3s;
+      box-shadow: 0 4px 20px rgba(0,255,127,0.3);
+    }
+    button:hover { 
+      background: #1cff90;
+      box-shadow: 0 6px 25px rgba(0,255,127,0.5);
+      transform: scale(1.02);
+    }
+    button:active { transform: scale(0.97); }
+    #steps {
+      list-style: none;
+      padding: 0;
+      margin-top: 15px;
+      text-align: right;
+    }
+    #steps li {
+      opacity: 0;
+      color: #a7e4c0;
+      font-size: 15px;
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    #steps li.active { opacity: 1; transform: translateX(0); }
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #00ff7f;
+      color: #0f2417;
+      padding: 12px 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,255,127,0.4);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s, transform 0.5s;
+      z-index: 9999;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    canvas { display: none; }
+    /* إخفاء زر اختيار ملف MCPACK لجعله يعمل تلقائياً */
+    #mcpackInput, label[for="mcpackInput"] { display: none !important; } 
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1><i class="fa-solid fa-cogs"></i> صانع الكيب باك</h1>
+
+    <input type="text" id="nameInput" placeholder="اسم الريسورس باك داخل اللعبة (مهم)">
+    <textarea id="descInput" rows="3" placeholder="وصف الريسورس باك داخل اللعبة (مهم)"></textarea>
+
+    <label class="upload-box" for="imgInput">
+      <i class="fa-solid fa-image"></i> اختر صورة أيقونة الحزمة
+    </label>
+    <input type="file" id="imgInput" accept="image/*">
+
+    <input type="file" id="mcpackInput" accept=".mcpack">
+
+    <button onclick="modifyMcpack()">
+      <i class="fa-solid fa-file-arrow-down"></i> صنع وحفظ الملف
+    </button>
+
+    <ul id="steps">
+      <li id="step0"><i class="fa-solid fa-cloud-download-alt"></i> تحميل ملف iraqcraft.mcpack</li>
+      <li id="step1"><i class="fa-solid fa-box"></i> قراءة الملف المضغوط</li>
+      <li id="step2"><i class="fa-solid fa-image"></i> دمج أيقونة الحزمة</li>
+      <li id="step3b"><i class="fa-solid fa-pen-to-square"></i> تغيير الاسم والوصف</li>
+      <li id="step4"><i class="fa-solid fa-floppy-disk"></i> إنشاء الملف النهائي</li>
+      <li id="step5"><i class="fa-solid fa-check"></i> تم الحفظ بنجاح</li>
+    </ul>
+    <canvas id="canvas" width="128" height="128"></canvas> </div>
+
+  <div id="toast" class="toast"><i class="fa-solid fa-check"></i> تم صنع الريسورس باك وتحميله بنجاح</div>
+
+  <script>
+    // اسم الملف الافتراضي الذي سيتم تحميله
+    const DEFAULT_MCPACK_NAME = "iraqcraft.mcpack"; 
+    
+    function generateUUID() {
+      // دالة لتوليد معرّف فريد (UUID) جديد
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random()*16|0, v = c=='x'?r:(r&0x3|0x8);
+        return v.toString(16);
+      });
+    }
+
+    // دالة جديدة لتحميل الملف الافتراضي
+    async function fetchMcpackFile() {
+        const response = await fetch(DEFAULT_MCPACK_NAME);
+        if (!response.ok) {
+            throw new Error(`تعذر تحميل الملف ${DEFAULT_MCPACK_NAME}. تأكد من وجوده في نفس المجلد.`);
+        }
+        return response.arrayBuffer();
+    }
+
+    async function modifyMcpack() {
+      const nameInput = document.getElementById('nameInput').value.trim();
+      const descInput = document.getElementById('descInput').value.trim();
+      const imgFile = document.getElementById('imgInput').files[0];
+      
+      const steps = [
+        document.getElementById('step0'),
+        document.getElementById('step1'),
+        document.getElementById('step2'),
+        document.getElementById('step3b'),
+        document.getElementById('step4'),
+        document.getElementById('step5')
+      ];
+      steps.forEach(s => s.classList.remove('active'));
+
+      if (!imgFile) {
+        alert("⚠️ لازم تختار صورة أيقونة الحزمة أولاً");
+        return;
+      }
+      
+      // الخطوة 0: تحميل الملف
+      steps[0].classList.add('active');
+      let mcpackArrayBuffer;
+      try {
+          mcpackArrayBuffer = await fetchMcpackFile();
+      } catch (error) {
+          alert(`خطأ: ${error.message}`);
+          steps.forEach(s => s.classList.remove('active'));
+          return;
+      }
+
+      // الخطوة 1: قراءة الملف
+      steps[1].classList.add('active');
+      await new Promise(r => setTimeout(r, 400));
+      
+      const img = new Image();
+      img.onerror = () => { 
+          alert("⚠️ حدث خطأ أثناء تحميل الصورة. يرجى التأكد من صلاحية ملف الصورة.");
+          steps.forEach(s => s.classList.remove('active'));
+      };
+
+      img.onload = async () => {
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+        
+        // تغيير حجم الـ Canvas إلى 128x128
+        canvas.width = 128; 
+        canvas.height = 128;
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+
+        // رسم الصورة بحجم 128x128
+        ctx.drawImage(img, 0, 0, 128, 128);     
+        
+        // الخطوة 2: دمج الصورة
+        steps[2].classList.add('active');
+        await new Promise(r => setTimeout(r, 400));
+
+        const zipData = await JSZip.loadAsync(mcpackArrayBuffer);
+        const imageData = await new Promise(resolve => canvas.toBlob(blob => resolve(blob.arrayBuffer())));
+        const files = Object.keys(zipData.files);
+
+        // *****************************************************************
+        // ** التعديل المطلوب: استبدال أيقونة الحزمة فقط (pack_icon.png) **
+        // *****************************************************************
+        let iconReplaced = false;
+        for (let path of files) {
+          // استبدال أيقونة الحزمة الرئيسية فقط
+          if (path.endsWith("pack_icon.png")) {
+            zipData.file(path, imageData);
+            iconReplaced = true;
+            // لا تبحث عن ملفات خلفية أخرى
+            break; 
+          }
+        }
+        
+        if (!iconReplaced) {
+            // محاولة وضع ملف pack_icon.png في المسار الجذري إذا لم يكن موجوداً
+            zipData.file("pack_icon.png", imageData);
+        }
+
+        // تعديل manifest.json
+        const manifestFile = files.find(f => f.endsWith("manifest.json"));
+        if (manifestFile) {
+          const manifestContent = await zipData.file(manifestFile).async("string");
+          const manifest = JSON.parse(manifestContent);
+
+          // تغيير معرّفات UUID
+          manifest.header.uuid = generateUUID();
+          if (manifest.modules) manifest.modules.forEach(m => m.uuid = generateUUID());
+
+          // الخطوة 3ب: تغيير الاسم والوصف (داخل ملف الريسورس باك)
+          steps[3].classList.add('active');
+          await new Promise(r => setTimeout(r, 400));
+
+          if (nameInput) manifest.header.name = nameInput;
+          if (descInput) manifest.header.description = descInput;
+
+          // حفظ التعديل داخل الـ ZIP
+          zipData.file(manifestFile, JSON.stringify(manifest, null, 2));
+        }
+
+        // الخطوة 4: إنشاء الملف النهائي
+        steps[4].classList.add('active');
+        await new Promise(r => setTimeout(r, 400));
+
+        // إنشاء الملف النهائي وتنزيله
+        const newContent = await zipData.generateAsync({ type: "blob", mimeType: "application/octet-stream" });
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(newContent);
+        
+        // حفظ الملف بنفس الاسم الأصلي iraqcraft.mcpack
+        a.download = DEFAULT_MCPACK_NAME; 
+        
+        a.click();
+
+        // الخطوة 5: تم الحفظ بنجاح
+        steps[5].classList.add('active');
+
+        // اظهار toast
+        const toast = document.getElementById("toast");
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 3000);
+      };
+      // بدء تحميل الصورة
+      img.src = URL.createObjectURL(imgFile);
+    }
+  </script>
+</body>
+</html>
