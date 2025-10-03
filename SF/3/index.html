@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>صانع الكيب باك</title>
+  <title>صانع الريسورس باك</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -130,186 +130,204 @@
       transform: translateY(0);
     }
     canvas { display: none; }
-    /* إخفاء زر اختيار ملف MCPACK لجعله يعمل تلقائياً */
-    #mcpackInput, label[for="mcpackInput"] { display: none !important; } 
+    /* تنسيق خاص لتأكيد اسم الملف الافتراضي */
+    .default-file-info {
+        color: #ffc107;
+        font-weight: bold;
+        margin-bottom: 20px;
+        padding: 10px;
+        border: 1px solid #ffc10750;
+        border-radius: 12px;
+    }
   </style>
 </head>
 <body>
   <div class="card">
-    <h1><i class="fa-solid fa-cogs"></i> صانع الكيب باك</h1>
+    <h1><i class="fa-solid fa-cogs"></i> صانع الريسورس باك</h1>
 
-    <input type="text" id="nameInput" placeholder="اسم الريسورس باك داخل اللعبة (مهم)">
-    <textarea id="descInput" rows="3" placeholder="وصف الريسورس باك داخل اللعبة (مهم)"></textarea>
+    <input type="text" id="nameInput" placeholder="اسم الريسورس باك داخل اللعبة">
+    <textarea id="descInput" rows="3" placeholder="وصف الريسورس باك داخل اللعبة"></textarea>
 
-    <label class="upload-box" for="imgInput">
-      <i class="fa-solid fa-image"></i> اختر صورة أيقونة الحزمة
+    <label class="upload-box" for="imgInput1">
+      <i class="fa-solid fa-image"></i> اختر صورة الخلفيات
     </label>
-    <input type="file" id="imgInput" accept="image/*">
+    <input type="file" id="imgInput1" accept="image/*">
 
-    <input type="file" id="mcpackInput" accept=".mcpack">
+    <label class="upload-box" for="imgInput2">
+      <i class="fa-solid fa-gem"></i> اختر أيقونة الحزمة (Pack Icon)
+    </label>
+    <input type="file" id="imgInput2" accept="image/*">
+    
 
     <button onclick="modifyMcpack()">
       <i class="fa-solid fa-file-arrow-down"></i> صنع وحفظ الملف
     </button>
 
     <ul id="steps">
-      <li id="step0"><i class="fa-solid fa-cloud-download-alt"></i> تحميل ملف iraqcraft.mcpack</li>
-      <li id="step1"><i class="fa-solid fa-box"></i> قراءة الملف المضغوط</li>
-      <li id="step2"><i class="fa-solid fa-image"></i> دمج أيقونة الحزمة</li>
-      <li id="step3b"><i class="fa-solid fa-pen-to-square"></i> تغيير الاسم والوصف</li>
-      <li id="step4"><i class="fa-solid fa-floppy-disk"></i> إنشاء الملف النهائي</li>
-      <li id="step5"><i class="fa-solid fa-check"></i> تم الحفظ بنجاح</li>
+      <li id="step1"><i class="fa-solid fa-box"></i> تحميل وقراءة ملف iraqcraft.mcpack</li>
+      <li id="step2"><i class="fa-solid fa-image"></i> دمج صور الخلفيات</li>
+      <li id="step3"><i class="fa-solid fa-gem"></i> دمج أيقونة الحزمة</li>
+      <li id="step4"><i class="fa-solid fa-wrench"></i> تجهيز البيانات</li>
+      <li id="step4b"><i class="fa-solid fa-pen-to-square"></i> تغيير الاسم والوصف</li>
+      <li id="step5"><i class="fa-solid fa-floppy-disk"></i> إنشاء الملف النهائي</li>
+      <li id="step6"><i class="fa-solid fa-check"></i> تم الحفظ بنجاح</li>
     </ul>
-    <canvas id="canvas" width="128" height="128"></canvas> </div>
+    <canvas id="canvas" width="1280" height="640"></canvas>
+  </div>
 
   <div id="toast" class="toast"><i class="fa-solid fa-check"></i> تم صنع الريسورس باك وتحميله بنجاح</div>
 
   <script>
-    // اسم الملف الافتراضي الذي سيتم تحميله
-    const DEFAULT_MCPACK_NAME = "iraqcraft.mcpack"; 
-    
+    // اسم الملف الافتراضي المطلوب
+    const DEFAULT_MCPACK_NAME = "iraqcraft.mcpack";
+
     function generateUUID() {
-      // دالة لتوليد معرّف فريد (UUID) جديد
       return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
         var r = Math.random()*16|0, v = c=='x'?r:(r&0x3|0x8);
         return v.toString(16);
       });
     }
 
-    // دالة جديدة لتحميل الملف الافتراضي
-    async function fetchMcpackFile() {
-        const response = await fetch(DEFAULT_MCPACK_NAME);
+    // دالة لتحميل الملف من الويب
+    async function fetchMcpackFile(url) {
+        const response = await fetch(url);
         if (!response.ok) {
-            throw new Error(`تعذر تحميل الملف ${DEFAULT_MCPACK_NAME}. تأكد من وجوده في نفس المجلد.`);
+            throw new Error(`فشل تحميل الملف. تأكد من وجود ملف ${url} بنفس المجلد.`);
         }
-        return response.arrayBuffer();
+        return response.blob();
+    }
+    
+    // دالة مساعدة لتحميل الصورة
+    function loadImage(file) {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.onload = () => resolve(img);
+            img.onerror = () => reject(new Error("خطأ في تحميل الصورة."));
+            img.src = URL.createObjectURL(file);
+        });
     }
 
+    // دالة مساعدة لإنشاء الصورة وتغيير حجمها
+    async function createResizedImage(img, width, height, isTiled = false) {
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = width;
+        canvas.height = height;
+        ctx.clearRect(0, 0, width, height);
+
+        if (isTiled) {
+             // منطق الخلفيات: رسم الصورة لملء المساحة 1280x640
+            ctx.drawImage(img, 0, 0, width, height); 
+        } else {
+            // منطق الأيقونة: رسم الصورة بالحجم المطلوب (128x128)
+            ctx.drawImage(img, 0, 0, width, height);
+        }
+
+        return new Promise(resolve => canvas.toBlob(blob => resolve(blob.arrayBuffer())));
+    }
+
+
+    // دالة رئيسية لتعديل الريسورس باك
     async function modifyMcpack() {
       const nameInput = document.getElementById('nameInput').value.trim();
       const descInput = document.getElementById('descInput').value.trim();
-      const imgFile = document.getElementById('imgInput').files[0];
+      const imgFile1 = document.getElementById('imgInput1').files[0]; // صورة الخلفيات
+      const imgFile2 = document.getElementById('imgInput2').files[0]; // أيقونة الحزمة
       
       const steps = [
-        document.getElementById('step0'),
         document.getElementById('step1'),
         document.getElementById('step2'),
-        document.getElementById('step3b'),
+        document.getElementById('step3'),
         document.getElementById('step4'),
-        document.getElementById('step5')
+        document.getElementById('step4b'),
+        document.getElementById('step5'),
+        document.getElementById('step6')
       ];
       steps.forEach(s => s.classList.remove('active'));
 
-      if (!imgFile) {
-        alert("⚠️ لازم تختار صورة أيقونة الحزمة أولاً");
+      if (!imgFile1 || !imgFile2) {
+        alert("⚠️ لازم تختار صورة الخلفيات وأيقونة الحزمة أولاً.");
         return;
       }
-      
-      // الخطوة 0: تحميل الملف
+
+      // الخطوة 1: تحميل وقراءة الملف التلقائي
       steps[0].classList.add('active');
-      let mcpackArrayBuffer;
+      let mcpackBlob;
       try {
-          mcpackArrayBuffer = await fetchMcpackFile();
+          // جلب الملف من نفس المجلد
+          mcpackBlob = await fetchMcpackFile(DEFAULT_MCPACK_NAME);
       } catch (error) {
-          alert(`خطأ: ${error.message}`);
+          alert(`⚠️ ${error.message}`);
           steps.forEach(s => s.classList.remove('active'));
           return;
       }
-
-      // الخطوة 1: قراءة الملف
-      steps[1].classList.add('active');
-      await new Promise(r => setTimeout(r, 400));
       
-      const img = new Image();
-      img.onerror = () => { 
-          alert("⚠️ حدث خطأ أثناء تحميل الصورة. يرجى التأكد من صلاحية ملف الصورة.");
-          steps.forEach(s => s.classList.remove('active'));
-      };
+      const zipData = await JSZip.loadAsync(mcpackBlob.arrayBuffer());
+      const files = Object.keys(zipData.files);
 
-      img.onload = async () => {
-        const canvas = document.getElementById("canvas");
-        const ctx = canvas.getContext("2d");
-        
-        // تغيير حجم الـ Canvas إلى 128x128
-        canvas.width = 128; 
-        canvas.height = 128;
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-
-        // رسم الصورة بحجم 128x128
-        ctx.drawImage(img, 0, 0, 128, 128);     
-        
-        // الخطوة 2: دمج الصورة
-        steps[2].classList.add('active');
-        await new Promise(r => setTimeout(r, 400));
-
-        const zipData = await JSZip.loadAsync(mcpackArrayBuffer);
-        const imageData = await new Promise(resolve => canvas.toBlob(blob => resolve(blob.arrayBuffer())));
-        const files = Object.keys(zipData.files);
-
-        // *****************************************************************
-        // ** التعديل المطلوب: استبدال أيقونة الحزمة فقط (pack_icon.png) **
-        // *****************************************************************
-        let iconReplaced = false;
-        for (let path of files) {
-          // استبدال أيقونة الحزمة الرئيسية فقط
-          if (path.endsWith("pack_icon.png")) {
-            zipData.file(path, imageData);
-            iconReplaced = true;
-            // لا تبحث عن ملفات خلفية أخرى
-            break; 
-          }
+      // 1. معالجة صورة الخلفيات (الصور الكبيرة)
+      steps[1].classList.add('active');
+      const img1 = await loadImage(imgFile1);
+      const imageData1 = await createResizedImage(img1, 1280, 640, true); 
+      for (let path of files) {
+        // استبدال صور الخلفية
+        if (path.endsWith("41.png") || path.endsWith("betmc_background_static.png")) {
+          zipData.file(path, imageData1);
         }
-        
-        if (!iconReplaced) {
-            // محاولة وضع ملف pack_icon.png في المسار الجذري إذا لم يكن موجوداً
-            zipData.file("pack_icon.png", imageData);
+      }
+
+      // 2. معالجة أيقونة الحزمة (الصورة الصغيرة pack_icon.png)
+      steps[2].classList.add('active');
+      await new Promise(r => setTimeout(r, 400));
+      const img2 = await loadImage(imgFile2);
+      const imageData2 = await createResizedImage(img2, 128, 128, false); 
+      for (let path of files) {
+        // استبدال أيقونة الحزمة
+        if (path.endsWith("pack_icon.png")) {
+          zipData.file(path, imageData2);
         }
+      }
 
-        // تعديل manifest.json
-        const manifestFile = files.find(f => f.endsWith("manifest.json"));
-        if (manifestFile) {
-          const manifestContent = await zipData.file(manifestFile).async("string");
-          const manifest = JSON.parse(manifestContent);
+      // 3. تعديل manifest.json
+      steps[3].classList.add('active');
+      await new Promise(r => setTimeout(r, 400));
+      const manifestFile = files.find(f => f.endsWith("manifest.json"));
+      if (manifestFile) {
+        const manifestContent = await zipData.file(manifestFile).async("string");
+        const manifest = JSON.parse(manifestContent);
 
-          // تغيير معرّفات UUID
-          manifest.header.uuid = generateUUID();
-          if (manifest.modules) manifest.modules.forEach(m => m.uuid = generateUUID());
+        // تغيير معرّفات UUID لتجنب التعارض
+        manifest.header.uuid = generateUUID();
+        if (manifest.modules) manifest.modules.forEach(m => m.uuid = generateUUID());
 
-          // الخطوة 3ب: تغيير الاسم والوصف (داخل ملف الريسورس باك)
-          steps[3].classList.add('active');
-          await new Promise(r => setTimeout(r, 400));
-
-          if (nameInput) manifest.header.name = nameInput;
-          if (descInput) manifest.header.description = descInput;
-
-          // حفظ التعديل داخل الـ ZIP
-          zipData.file(manifestFile, JSON.stringify(manifest, null, 2));
-        }
-
-        // الخطوة 4: إنشاء الملف النهائي
         steps[4].classList.add('active');
         await new Promise(r => setTimeout(r, 400));
 
-        // إنشاء الملف النهائي وتنزيله
-        const newContent = await zipData.generateAsync({ type: "blob", mimeType: "application/octet-stream" });
-        const a = document.createElement("a");
-        a.href = URL.createObjectURL(newContent);
-        
-        // حفظ الملف بنفس الاسم الأصلي iraqcraft.mcpack
-        a.download = DEFAULT_MCPACK_NAME; 
-        
-        a.click();
+        // تغيير الاسم والوصف داخل الملف
+        if (nameInput) manifest.header.name = nameInput;
+        if (descInput) manifest.header.description = descInput;
 
-        // الخطوة 5: تم الحفظ بنجاح
-        steps[5].classList.add('active');
+        zipData.file(manifestFile, JSON.stringify(manifest, null, 2));
+      }
 
-        // اظهار toast
-        const toast = document.getElementById("toast");
-        toast.classList.add("show");
-        setTimeout(() => toast.classList.remove("show"), 3000);
-      };
-      // بدء تحميل الصورة
-      img.src = URL.createObjectURL(imgFile);
+      // الخطوة 5: إنشاء الملف النهائي
+      steps[5].classList.add('active');
+      await new Promise(r => setTimeout(r, 400));
+
+      const newContent = await zipData.generateAsync({ type: "blob", mimeType: "application/octet-stream" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(newContent);
+      
+      // حفظ الملف بنفس الاسم الأصلي المطلوب
+      a.download = DEFAULT_MCPACK_NAME;
+      
+      a.click();
+
+      steps[6].classList.add('active');
+
+      const toast = document.getElementById("toast");
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 3000);
     }
   </script>
 </body>
