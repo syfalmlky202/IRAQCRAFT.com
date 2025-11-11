@@ -17,8 +17,6 @@
   
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700;900&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <link rel="stylesheet" href="index.css">
-  
   <meta property="og:title" content="عراقي كرافت | مودات ماين كرافت بدون إعلانات">
   <meta property="og:description" content="حمّل أفضل المودات، الخرائط، والباكات من تطبيق عراقي كرافت بسهولة وبدون إعلانات.">
   <meta property="og:image" content="https://raw.githubusercontent.com/ii7modysmp-hue/mod/main/general_uploads/1762430342056-IMG_20251102_213416_744.jpg">
@@ -355,15 +353,17 @@ body {
 
 .card-actions {
   display: flex;
-  justify-content: space-between;
+  /* تغيير من space-between */
+  justify-content: center; 
   align-items: center;
   gap: 10px;
   margin-top: auto; /* Push to the bottom of the card */
 }
 
-.download-btn,
-.share-btn {
-  flex: 1;
+.download-btn {
+  /* جعل زر التحميل يأخذ عرض الكارد بالكامل تقريباً */
+  flex: 1; 
+  max-width: 100%; /* تأكد أنه يملأ العرض المتاح */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -377,9 +377,6 @@ body {
   text-decoration: none;
   transition: background-color var(--transition-speed), transform 0.2s ease, box-shadow var(--transition-speed);
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
-}
-
-.download-btn {
   background-color: #32e16d;
   color: #050505;
 }
@@ -390,24 +387,13 @@ body {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
 }
 
-.share-btn {
-  background-color: #3b5998; /* A nice blue for sharing */
-  color: #fff;
-}
 
-.share-btn:hover {
-  background-color: #4a6aa6;
-  transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
-}
-
-.download-btn i,
-.share-btn i {
+.download-btn i {
   font-size: 20px;
 }
 
-.download-btn:active,
-.share-btn:active {
+
+.download-btn:active {
   transform: translateY(0);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
@@ -579,8 +565,8 @@ body {
   .image-wrapper { height: 120px; margin-bottom: 8px; }
   .mod-name { font-size: 15px; margin-bottom: 4px; }
   .mod-version { font-size: 12px; margin-bottom: 8px; }
-  .download-btn, .share-btn { font-size: 13px; padding: 8px; gap: 6px; }
-  .download-btn i, .share-btn i { font-size: 16px; }
+  .download-btn { font-size: 13px; padding: 8px; gap: 6px; }
+  .download-btn i { font-size: 16px; }
   .no-mods-message, .error-message { font-size: 16px; padding: 15px; }
   .scroll-buttons { bottom: 65px; right: 15px; }
   .scroll-button { width: 40px; height: 40px; font-size: 20px; }
@@ -618,8 +604,8 @@ body {
   .image-wrapper { height: 140px; margin-bottom: 10px; }
   .mod-name { font-size: 16px; margin-bottom: 6px; }
   .mod-version { font-size: 13px; margin-bottom: 10px; }
-  .download-btn, .share-btn { font-size: 14px; padding: 9px; }
-  .download-btn i, .share-btn i { font-size: 18px; }
+  .download-btn { font-size: 14px; padding: 9px; }
+  .download-btn i { font-size: 18px; }
   .no-mods-message, .error-message { font-size: 18px; padding: 18px; }
   .scroll-buttons { bottom: 75px; right: 18px; }
   .scroll-button { width: 45px; height: 45px; font-size: 22px; }
@@ -642,8 +628,8 @@ body {
   .image-wrapper { height: 160px; margin-bottom: 12px; }
   .mod-name { font-size: 18px; margin-bottom: 7px; }
   .mod-version { font-size: 14px; margin-bottom: 11px; }
-  .download-btn, .share-btn { font-size: 16px; padding: 11px; }
-  .download-btn i, .share-btn i { font-size: 19px; }
+  .download-btn { font-size: 16px; padding: 11px; }
+  .download-btn i { font-size: 19px; }
   .no-mods-message, .error-message { font-size: 19px; padding: 20px; }
   .scroll-buttons { bottom: 85px; right: 20px; }
   .scroll-button { width: 50px; height: 50px; font-size: 24px; }
@@ -657,7 +643,7 @@ body {
   .fixed-footer-icons { padding: 10px 0; }
   .fixed-footer-icons a { font-size: 16px; gap: 5px; padding: 5px 10px; }
   .fixed-footer-icons a i { font-size: 24px; }
-  .download-btn, .share-btn { flex: 1; }
+  .download-btn { flex: 1; }
 }
 
 
@@ -926,8 +912,7 @@ body {
   </main>
 
 
-
-  <div class="scroll-buttons">
+<div class="scroll-buttons">
     <button id="scrollToTopBtn" class="scroll-button" aria-label="الذهاب لأعلى الصفحة">
       <i class="fas fa-arrow-up"></i>
     </button>
@@ -1302,7 +1287,7 @@ document.addEventListener("DOMContentLoaded", () => {
             itemDiv.setAttribute("data-name", item.name || '');
             itemDiv.setAttribute("data-version", item.version || '');
             itemDiv.setAttribute("data-number", String(item.number !== null ? item.number : ''));
-            itemDiv.setAttribute("data-item-id", item.id); // Store ID for sharing
+            itemDiv.setAttribute("data-item-id", item.id); // Store ID for sharing (still used for ID but not actual share button)
 
             const imageUrl = item.image && item.image.startsWith('http') ? item.image : 'https://via.placeholder.com/280x180?text=No+Image';
             const downloadLink = item.link && item.link.startsWith('http') ? item.link : '#';
@@ -1322,12 +1307,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     <i class="fas fa-download"></i>
                     <span>${isDownloadable ? 'تحميل' : 'لا يوجد رابط'}</span>
                 </a>
-                <button class="share-btn" data-item-id="${item.id}" data-item-name="${item.name}">
-                    <i class="fas fa-share-alt"></i>
-                    <span>مشاركة</span>
-                </button>
             </div>
             `;
+            // ملاحظة: تم حذف زر المشاركة <button class="share-btn">... </button>
+            
             modsContainer.appendChild(itemDiv);
 
             // 💡 التعديل: إضافة الإعلان البيني بعد كل 5 مودات (فهرس يبدأ من 0، لذا نتحقق من (index + 1) % 5 === 0)
@@ -1336,35 +1319,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
-        // Add event listeners to newly created share buttons
-        document.querySelectorAll('.share-btn').forEach(button => {
-            button.addEventListener('click', (e) => {
-                const itemId = e.currentTarget.getAttribute('data-item-id');
-                const itemName = e.currentTarget.getAttribute('data-item-name');
-                const shareUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}#mod-${itemId}`;
-                
-                if (navigator.share) {
-                    navigator.share({
-                        title: `مود ${itemName}`,
-                        text: `شارك مود ماين كرافت الرائع: ${itemName}`,
-                        url: shareUrl
-                    }).then(() => {
-                        console.log('Successfully shared!');
-                    }).catch((error) => {
-                        console.error('Error sharing:', error);
-                    });
-                } else {
-                    // Fallback for browsers that don't support Web Share API
-                    alert(`انسخ الرابط للمشاركة:\n${shareUrl}`);
-                    // Copy to clipboard
-                    navigator.clipboard.writeText(shareUrl).then(() => {
-                        alert('تم نسخ الرابط!');
-                    }).catch(err => {
-                        console.error('Could not copy text: ', err);
-                    });
-                }
-            });
-        });
+        // 💡 تم حذف الكود الخاص بإضافة معالج الأحداث لأزرار المشاركة المحذوفة.
     };
 
     // Initial load: start with the main database for 'mods'
@@ -1421,6 +1376,7 @@ document.addEventListener("DOMContentLoaded", () => {
     scrollToBottomBtn.style.display = 'none';
 
     // Ripple Effect for Footer Buttons
+    // 💡 تم الإبقاء على كود الـ Ripple Effect لضمان عدم إحداث مشاكل في حال كان هناك أيقونات أخرى في الـ Footer Icons (في هذا الكود لا توجد أيقونات أخرى غير أزرار الـ Scroll ولكن تم الإبقاء على الكود احتياطًا).
     footerButtons.forEach(button => {
         button.addEventListener('mousedown', function(e) {
             const circle = document.createElement('span');
