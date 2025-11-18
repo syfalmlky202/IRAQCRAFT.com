@@ -690,12 +690,14 @@ body {
 
 .ad-popup-content {
     background: var(--dark-card-bg);
-    border: 3px solid #ff4500; /* Neon Orange Border */
+    /* تغيير لون الحدود ليتناسب مع العرض الخاص */
+    border: 3px solid #ffc700; /* Gold Border */ 
     border-radius: var(--border-radius-md);
     padding: 30px;
     width: 90%;
     max-width: 450px;
-    box-shadow: 0 0 40px rgba(255, 69, 0, 0.8);
+    /* تغيير ظل الصندوق */
+    box-shadow: 0 0 40px rgba(255, 199, 0, 0.8);
     text-align: center;
     animation: bounceIn 0.5s ease-out;
     position: relative;
@@ -708,7 +710,8 @@ body {
 }
 
 .ad-popup-content h3 {
-    color: #ff4500;
+    /* تغيير لون العنوان */
+    color: #00ff7f; /* Primary Green */
     font-size: 24px;
     font-weight: 900;
     margin-bottom: 10px;
@@ -722,11 +725,30 @@ body {
     direction: rtl;
 }
 
+/* نمط السعر الجديد */
+.ad-popup-content .new-price {
+    color: #ffc700; /* Gold */
+    font-size: 30px;
+    font-weight: 900;
+    display: inline-block;
+    margin: 0 5px;
+    text-shadow: 0 0 10px rgba(255, 199, 0, 0.9);
+}
+/* نمط السعر القديم (مخفّض) */
+.ad-popup-content .old-price {
+    color: #ff6347; /* Reddish */
+    font-size: 18px;
+    text-decoration: line-through;
+    margin-right: 10px;
+    opacity: 0.7;
+    display: inline-block;
+}
+
 .ad-popup-content .close-btn {
     position: absolute;
     top: 10px;
     left: 10px;
-    background: #ff4500;
+    background: #ffc700; /* Gold */
     color: var(--dark-card-bg);
     border: none;
     border-radius: 50%;
@@ -740,17 +762,17 @@ body {
 }
 
 .ad-popup-content .close-btn:hover {
-    background-color: #ff6347;
+    background-color: #ffd700;
 }
 
 /* Timer Styling */
 .ad-timer {
-    color: #ffc700; /* Gold/Yellow for the timer */
+    color: #ff6347; /* أحمر للتنبيه */
     font-weight: 900;
     font-size: 20px;
     margin-top: 10px;
     display: block;
-    direction: ltr; /* To make the timer display left-to-right */
+    direction: rtl; /* To make the timer display right-to-left */
 }
 
 
@@ -843,5 +865,3 @@ body {
   }
 }
   
-
-
