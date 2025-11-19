@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>🚀 منصة رفع المودات</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body id="app-body" class="ar">
+<div class="container">
+  <div class="language-selector">
+    <label for="lang-select" id="label-lang-select">اللغة:</label>
+    <select id="lang-select" onchange="setLanguage(this.value)">
+      <option value="ar">العربية</option>
+      <option value="ru">Русский</option>
+    </select>
+  </div>
+  
+  <h1 id="main-title">🚀 رفع مودات تطبيق عراقي كرافت</h1>
+  <div class="input-group">
+    <input type="text" id="modName" placeholder="اسم المود">
+    <i class="fas fa-file-signature"></i>
+  </div>
+  <div class="input-group">
+    <input type="text" id="modVersion" placeholder="إصدار المود">
+    <i class="fas fa-box-open"></i>
+  </div>
+  <div class="file-upload-wrapper">
+    <label for="modImage" class="file-label" id="label-mod-image">
+      <i class="fas fa-image"></i>
+      <span>اختر صورة المود</span>
+    </label>
+    <input type="file" id="modImage" accept="image/*">
+    <div id="image-name" class="file-name"></div>
+  </div>
+  <div class="file-upload-wrapper">
+    <label for="modFile" class="file-label" id="label-mod-file">
+      <i class="fas fa-cloud-upload-alt"></i>
+      <span>اختر ملف المود</span>
+    </label>
+    <input type="file" id="modFile">
+    <div id="file-name" class="file-name"></div>
+  </div>
+  <button onclick="uploadMod()" id="upload-button">✅ رفع المود</button>
+
+  <div id="status">
+    <i class="fas fa-info-circle"></i>
+    <span id="status-text">أدخل المعلومات واضغط زر الرفع</span>
+  </div>
+  <div id="progress-container" class="progress-bar-container">
+    <div id="progress-bar" class="progress-bar"></div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
