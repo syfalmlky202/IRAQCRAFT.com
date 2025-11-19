@@ -1,0 +1,227 @@
+body { 
+    background: #0d0d0d; 
+    color: #e0e0e0; 
+    font-family: 'Tajawal', sans-serif; 
+    text-align: center; 
+    padding: 10px; 
+    margin: 0; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    min-height: 100vh; 
+    box-sizing: border-box; 
+}
+
+/* إضافة خط 'Roboto' لدعم اللغة الروسية */
+body.ru { 
+    font-family: 'Roboto', sans-serif; 
+}
+
+.container { 
+    background: #151515; 
+    border-radius: 20px; 
+    padding: 20px; 
+    width: 100%; 
+    max-width: 450px; 
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5); 
+    border: 1px solid #2a2a2a; 
+    box-sizing: border-box; 
+}
+
+h1 { 
+    font-size: 2rem; 
+    margin-bottom: 20px; 
+    background: linear-gradient(90deg, #6a11cb, #2575fc); 
+    -webkit-background-clip: text; 
+    -webkit-text-fill-color: transparent; 
+    font-weight: 700; 
+}
+
+.input-group { 
+    position: relative; 
+    margin-bottom: 15px; 
+}
+
+.input-group i { 
+    position: absolute; 
+    top: 50%; 
+    transform: translateY(-50%); 
+    color: #555; 
+    font-size: 1em; 
+}
+
+/* تعديل موقع الأيقونات حسب اتجاه النص */
+html[dir="rtl"] .input-group i { 
+    right: 15px; 
+    left: auto; 
+}
+
+html[dir="ltr"] .input-group i { 
+    left: 15px; 
+    right: auto; 
+}
+
+input[type="text"] { 
+    width: 100%; 
+    padding: 12px 45px 12px 15px; 
+    background: #1e1e1e; 
+    border: 1px solid #333; 
+    border-radius: 10px; 
+    color: #fff; 
+    font-size: 0.95rem; 
+    transition: border-color 0.3s, box-shadow 0.3s; 
+    box-sizing: border-box; 
+}
+
+/* تعديل حشو الإدخال حسب اتجاه النص */
+html[dir="rtl"] input[type="text"] { 
+    padding: 12px 45px 12px 15px; 
+}
+
+html[dir="ltr"] input[type="text"] { 
+    padding: 12px 15px 12px 45px; 
+}
+
+input[type="text"]:focus { 
+    outline: none; 
+    border-color: #6a11cb; 
+    box-shadow: 0 0 8px rgba(106, 17, 203, 0.5); 
+}
+
+.file-upload-wrapper { 
+    margin-bottom: 15px; 
+}
+
+.file-label { 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    padding: 12px; 
+    background: #222; 
+    border: 2px dashed #444; 
+    border-radius: 10px; 
+    cursor: pointer; 
+    color: #888; 
+    transition: background 0.3s, border-color 0.3s; 
+}
+
+.file-label:hover { 
+    background: #2a2a2a; 
+    border-color: #6a11cb; 
+    color: #fff; 
+}
+
+/* تعديل اتجاه أيقونات تسمية الملفات */
+html[dir="rtl"] .file-label i { 
+    margin-left: 8px; 
+    margin-right: 0; 
+}
+
+html[dir="ltr"] .file-label i { 
+    margin-right: 8px; 
+    margin-left: 0; 
+}
+
+input[type="file"] { 
+    display: none; 
+}
+
+.file-name { 
+    margin-top: 8px; 
+    font-size: 0.85em; 
+    color: #aaa; 
+    overflow-wrap: break-word; 
+}
+
+button { 
+    width: 100%; 
+    padding: 12px; 
+    margin-top: 5px; 
+    border: none; 
+    border-radius: 10px; 
+    font-size: 1rem; 
+    font-weight: bold; 
+    background: linear-gradient(90deg, #2575fc, #6a11cb); 
+    color: #fff; 
+    cursor: pointer; 
+    transition: transform 0.3s, box-shadow 0.3s; 
+}
+
+button:hover { 
+    transform: translateY(-2px); 
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); 
+}
+
+#status { 
+    margin-top: 20px; 
+    padding: 15px; 
+    border-radius: 10px; 
+    background: #1e1e1e; 
+    font-size: 0.95rem; 
+}
+
+.loading { 
+    color: #f39c12; 
+}
+
+.success { 
+    color: #2ecc71; 
+}
+
+.error { 
+    color: #e74c3c; 
+}
+
+.progress-bar-container { 
+    width: 100%; 
+    background: #333; 
+    border-radius: 8px; 
+    height: 8px; 
+    margin-top: 10px; 
+    overflow: hidden; 
+    display: none; 
+}
+
+.progress-bar { 
+    height: 100%; 
+    width: 0; 
+    background: linear-gradient(90deg, #2575fc, #6a11cb); 
+    transition: width 0.3s ease; 
+}
+
+/* تنسيق محدد اللغة */
+.language-selector { 
+    margin-bottom: 20px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    color: #ccc;
+}
+
+.language-selector label { 
+    margin-right: 10px; 
+}
+
+.language-selector select { 
+    padding: 8px; 
+    border-radius: 8px; 
+    border: 1px solid #333; 
+    background: #1e1e1e; 
+    color: #fff; 
+    font-size: 0.9rem; 
+    cursor: pointer; 
+    appearance: none; 
+    -moz-appearance: none; 
+    -webkit-appearance: none; 
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="%23fff" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat; 
+    background-position: calc(100% - 10px) center; 
+    padding-right: 30px; 
+}
+
+/* لتغيير موقع أيقونة السهم في الاتجاه RTL */
+html[dir="rtl"] .language-selector select { 
+    background-position: 10px center; 
+    padding-right: 8px; 
+    padding-left: 30px; 
+}
