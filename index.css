@@ -1,6 +1,5 @@
 
   
-  
 /* Global Resets & Typography */
 :root {
   --primary-green: #00ff7f;
@@ -305,6 +304,29 @@ body {
   direction: rtl;
 }
 
+/* New: View/Download Counters Style */
+.mod-stats {
+    display: flex;
+    justify-content: flex-start;
+    gap: 15px;
+    margin-bottom: 10px;
+    direction: rtl;
+    font-size: 14px;
+    color: #00ff7f;
+}
+
+.mod-stat {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 700;
+}
+
+.mod-stat i {
+    color: var(--light-gray-text);
+    font-size: 16px;
+}
+
 .card-actions {
   display: flex;
   justify-content: center; 
@@ -564,6 +586,8 @@ body {
   .image-wrapper { height: 100px; margin-bottom: 8px; }
   .mod-name { font-size: 14px; margin-bottom: 4px; }
   .mod-version { font-size: 11px; margin-bottom: 8px; }
+  .mod-stats { font-size: 10px; gap: 10px; margin-bottom: 5px;}
+  .mod-stat i { font-size: 12px;}
   .download-btn { font-size: 12px; padding: 8px; gap: 5px; }
   .download-btn i { font-size: 14px; }
   
@@ -611,6 +635,8 @@ body {
   .image-wrapper { height: 120px; margin-bottom: 10px; }
   .mod-name { font-size: 16px; margin-bottom: 6px; }
   .mod-version { font-size: 13px; margin-bottom: 10px; }
+  .mod-stats { font-size: 12px; gap: 12px; margin-bottom: 8px;}
+  .mod-stat i { font-size: 14px;}
   .download-btn { font-size: 14px; padding: 9px; }
   .download-btn i { font-size: 18px; }
   
@@ -645,6 +671,8 @@ body {
   .image-wrapper { height: 150px; }
   .mod-name { font-size: 18px; }
   .mod-version { font-size: 14px; }
+  .mod-stats { font-size: 13px; gap: 15px; margin-bottom: 10px;}
+  .mod-stat i { font-size: 15px;}
   .download-btn { font-size: 15px; padding: 10px; }
   .download-btn i { font-size: 18px; }
   
@@ -844,5 +872,3 @@ body {
   }
 }
   
-
-
